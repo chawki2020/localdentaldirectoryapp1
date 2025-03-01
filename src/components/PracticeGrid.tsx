@@ -79,10 +79,16 @@ const PracticeGrid = ({
   onPageChange = () => {},
   onPracticeClick = () => {},
 }: PracticeGridProps) => {
+  // Calculate which practices to show based on current page
+  const itemsPerPage = 8;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedPractices = practices.slice(startIndex, endIndex);
+
   return (
     <div className="w-full min-h-screen bg-gray-50 p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
-        {practices.map((practice) => (
+        {displayedPractices.map((practice) => (
           <PracticeCard
             key={practice.id}
             name={practice.name}

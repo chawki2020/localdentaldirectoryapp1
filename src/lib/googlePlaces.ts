@@ -26,14 +26,20 @@ export interface PlaceResult {
 
 export const searchDentists = async (
   location: string,
+  searchTerm: string = "",
+  page: number = 1,
 ): Promise<PlaceResult[]> => {
   await loader.load();
   const service = new google.maps.places.PlacesService(
     document.createElement("div"),
   );
 
+  const query = searchTerm
+    ? `${searchTerm} dentist in ${location}`
+    : `dentist in ${location}`;
+
   const request = {
-    query: `dentist in ${location}`,
+    query,
     fields: [
       "name",
       "geometry",

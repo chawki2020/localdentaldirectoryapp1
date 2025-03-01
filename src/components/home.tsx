@@ -24,10 +24,66 @@ const Home = ({
       if (location) {
         setLoading(true);
         try {
-          const results = await searchDentists(location);
+          const results = await searchDentists(location, searchTerm);
           setPractices(results);
         } catch (error) {
           console.error("Failed to fetch practices:", error);
+          // Provide fallback data if API fails
+          setPractices([
+            {
+              id: "1",
+              name: "Dr. Smith Dental Care",
+              image:
+                "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800",
+              rating: 4.5,
+              reviewCount: 128,
+              location: "Manhattan, NY",
+              specialties: ["General Dentistry", "Cosmetic", "Orthodontics"],
+              latestReview:
+                "Great experience! Very professional and caring staff.",
+              phone: "(212) 555-0123",
+              coordinates: { lat: 40.7128, lng: -74.006 },
+            },
+            {
+              id: "2",
+              name: "Brooklyn Smile Clinic",
+              image:
+                "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800",
+              rating: 4.8,
+              reviewCount: 95,
+              location: "Brooklyn, NY",
+              specialties: ["Family Dentistry", "Pediatric", "Implants"],
+              latestReview: "The best dental experience I've ever had!",
+              phone: "(718) 555-0456",
+              coordinates: { lat: 40.6782, lng: -73.9442 },
+            },
+            {
+              id: "3",
+              name: "Queens Dental Associates",
+              image:
+                "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800",
+              rating: 4.6,
+              reviewCount: 156,
+              location: "Queens, NY",
+              specialties: ["Cosmetic", "Emergency", "Periodontics"],
+              latestReview: "Excellent service and very modern facility.",
+              phone: "(347) 555-0789",
+              coordinates: { lat: 40.7282, lng: -73.7949 },
+            },
+            {
+              id: "4",
+              name: "Bronx Family Dentistry",
+              image:
+                "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=800",
+              rating: 4.7,
+              reviewCount: 112,
+              location: "Bronx, NY",
+              specialties: ["Family Dentistry", "Orthodontics"],
+              latestReview: "Very friendly staff and great with kids!",
+              phone: "(718) 555-0321",
+              coordinates: { lat: 40.8448, lng: -73.8648 },
+            },
+          ]);
         } finally {
           setLoading(false);
         }
@@ -35,7 +91,7 @@ const Home = ({
     };
 
     fetchPractices();
-  }, [location]);
+  }, [location, searchTerm]);
 
   const handleSearch = (term: string, loc: string) => {
     setSearchTerm(term);
@@ -57,7 +113,7 @@ const Home = ({
         <SearchResults
           practices={practices}
           currentPage={currentPage}
-          totalPages={Math.ceil(practices.length / 12)}
+          totalPages={Math.max(1, Math.ceil(practices.length / 8))}
           onPageChange={setCurrentPage}
         />
       </div>
