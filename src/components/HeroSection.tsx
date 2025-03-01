@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Search, MapPin } from "lucide-react";
@@ -19,6 +19,8 @@ const HeroSection = ({
   onSearch = () => {},
   backgroundImage = "https://images.unsplash.com/photo-1629909615184-74f495363b67?w=1200",
 }: HeroSectionProps) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [location, setLocation] = useState("manhattan");
   return (
     <div className="relative w-full h-[400px] bg-gray-900">
       {/* Background Image with Overlay */}
@@ -47,10 +49,12 @@ const HeroSection = ({
               type="text"
               placeholder="Search for dentists, specialties, or procedures"
               className="w-full pl-10 h-12 text-lg bg-white"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="w-full sm:w-48 relative">
-            <Select defaultValue="manhattan">
+            <Select defaultValue="manhattan" onValueChange={setLocation}>
               <SelectTrigger className="w-full h-12 bg-white">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-gray-500" />
@@ -68,7 +72,7 @@ const HeroSection = ({
           </div>
           <Button
             className="h-12 px-8 text-lg"
-            onClick={() => onSearch("", "")}
+            onClick={() => onSearch(searchTerm, location)}
           >
             Search
           </Button>
